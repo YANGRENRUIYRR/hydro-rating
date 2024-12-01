@@ -32,24 +32,10 @@ async function fetchData(username: string): Promise<UserRatingInfo> {
         ],
         body: JSON.stringify({"query":"query Example($name: String!) {\n  user(uname: ${username}) {\n    rpInfo\n  }\n}","variables":{"name":"Hydro"},"operationName":"Example"}),
         method: "POST",
-    });//This line needs to be modified.
-    const html = await res.text();
-    const document = parse(html);
-    const container = document.querySelector('#main-container');
-
-    if (!res.ok || !container) return { rating: 0, text: 'N/A' };
-
-    const ratingEl = container.querySelector(
-        '#user-nav-tabs + table tr:nth-child(2) > td:nth-child(2) > span'
-    );
-    const textEl = document.querySelector('div.row > div.col-md-3.col-sm-12 > h3 > b');
-
-    if (!ratingEl) return { rating: 0, text: 'Unrated' };
-
-    const rating = Number(ratingEl.innerText.trim());
-    const text = textEl?.innerText.trim() || 'N/A';
-
-    return { rating, text: `${text}  ${rating}` };
+    });
+    if (!res.ok) return { rating: 0, text: 'N/A' };
+    const data = await res.json();
+    // ToDo
 }
 
 async function getBadgeImage(username: string, data: UserRatingInfo, style: string) {
