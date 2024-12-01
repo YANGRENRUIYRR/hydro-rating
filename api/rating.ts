@@ -35,7 +35,9 @@ async function fetchData(username: string): Promise<UserRatingInfo> {
     });
     if (!res.ok) return { rating: 0, text: 'N/A' };
     const data = await res.json();
-    // ToDo
+    const user = data.data.user;
+    if (user==null) return { rating: 0, text: 'N/A' };
+    return { rating: 1000, text: 'Debug' };
 }
 
 async function getBadgeImage(username: string, data: UserRatingInfo, style: string) {
