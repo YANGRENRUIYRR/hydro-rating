@@ -24,8 +24,15 @@ function getRatingColor(rating: number) {
     return '808080';
 }
 
-async function fetchData(username: string, type: string): Promise<UserRatingInfo> {
-    const res = await fetch(`https://atcoder.jp/users/${username}?contestType=${type}`);//This line needs to be modified.
+async function fetchData(username: string): Promise<UserRatingInfo> {
+    const res = await fetch("https://hydro.ac/api", {
+        headers: [
+            ["content-type", "application/json"],
+            ["referer", "https://hydro.ac/"],
+        ],
+        body: JSON.stringify({"query":"query Example($name: String!) {\n  user(uname: ${username}) {\n    rpInfo\n  }\n}","variables":{"name":"Hydro"},"operationName":"Example"}),
+        method: "POST",
+    });//This line needs to be modified.
     const html = await res.text();
     const document = parse(html);
     const container = document.querySelector('#main-container');
@@ -68,13 +75,12 @@ async function getBadgeImage(username: string, data: UserRatingInfo, style: stri
 }
 
 export default async (request: VercelRequest, response: VercelResponse) => {
-    let { username = 'yangrenrui', type = 'algo', style = 'for-the-badge' } = request.query;
+    let { username = 'yangrenrui', style = 'for-the-badge' } = request.query;
 
     if (Array.isArray(username)) username = username[0];
-    if (Array.isArray(type)) type = type[0];
     if (Array.isArray(style)) style = style[0];
 
-    const data = await fetchData(username as string, type as string).catch(() => ({ rating: 0, text: 'N/A' }));
+    const data = await fetchData(username as string).catch(() => ({ rating: 0, text: 'N/A' }));
     getBadgeImage(username as string, data, style as string)
         .then((data) => {
             response
