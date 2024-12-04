@@ -44,7 +44,7 @@ async function fetchData(username: string): Promise<UserRatingInfo> {
     if(userrp.contest!=undefined) rat+=userrp.contest;
     if(userrp.contribution!=undefined) rat+=userrp.contribution;
     if(userrp.submissions!=undefined) rat+=userrp.submissions;
-    return {rating: rat.toFixed(2),text: rat.toFixed(2).toString(), uid: data.user._id }
+    return {rating: rat.toFixed(2),text: rat.toFixed(2).toString(), uid: user._id }
 }
 
 async function getBadgeImage(username: string, data: UserRatingInfo, style: string) {
@@ -75,7 +75,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     if (Array.isArray(username)) username = username[0];
     if (Array.isArray(style)) style = style[0];
 
-    const data = await fetchData(username as string).catch(() => ({ rating: 0, text: 'N/A' }));
+    const data = await fetchData(username as string).catch(() => ({ rating: 0, text: 'N/A', uid: 0}));
     getBadgeImage(username as string, data, style as string)
         .then((data) => {
             response
