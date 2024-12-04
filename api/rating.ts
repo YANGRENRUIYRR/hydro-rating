@@ -14,13 +14,13 @@ function escape(username: string) {
 }
 
 function getRatingColor(rating: number) {
-    if (rating >= 2800) return 'FF0000';
-    if (rating >= 2400) return 'FF8000';
-    if (rating >= 2000) return 'C0C000';
-    if (rating >= 1600) return '0000FF';
-    if (rating >= 1200) return '00C0C0';
-    if (rating >= 800) return '008000';
-    if (rating >= 400) return '804000';
+    if (rating >= 430) return 'FF0000';
+    if (rating >= 360) return 'FF8000';
+    if (rating >= 240) return 'C0C000';
+    if (rating >= 160) return '0000FF';
+    if (rating >= 80) return '00C0C0';
+    if (rating >= 40) return '008000';
+    if (rating >= 20) return '804000';
     return '808080';
 }
 
@@ -43,7 +43,7 @@ async function fetchData(username: string): Promise<UserRatingInfo> {
     if(userrp.contest!=undefined) rat+=userrp.contest;
     if(userrp.contribution!=undefined) rat+=userrp.contribution;
     if(userrp.submissions!=undefined) rat+=userrp.submissions;
-    return {rating: rat.toFixed(1),text: rat.toFixed(1).toString() }
+    return {rating: rat.toFixed(2),text: rat.toFixed(2).toString() }
 }
 
 async function getBadgeImage(username: string, data: UserRatingInfo, style: string) {
