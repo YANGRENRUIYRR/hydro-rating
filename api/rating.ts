@@ -31,7 +31,7 @@ async function fetchData(username: string): Promise<UserRatingInfo> {
             ["content-type", "application/json"],
             ["referer", "https://hydro.ac/"],
         ],
-        body: JSON.stringify({"query":"query Example($name: String!) {\n  user(uname: $name) {\n    rpInfo\n    _id\n  }\n}","variables":{"name":"Hydro"},"operationName":"Example"}),
+        body: JSON.stringify({"query":"query Example($name: String!) {\n  user(uname: $name) {\n    rpInfo\n    _id\n  }\n}","variables":{"name": username },"operationName":"Example"}),
         method: "POST",
     });
     if (!res.ok) return { rating: 0, text: 'N/A', uid: 0 };
