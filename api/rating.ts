@@ -7,6 +7,7 @@ const logo =
 interface UserRatingInfo {
     rating: number;
     text: string;
+    uid: number;
 }
 
 function escape(username: string) {
@@ -30,20 +31,20 @@ async function fetchData(username: string): Promise<UserRatingInfo> {
             ["content-type", "application/json"],
             ["referer", "https://hydro.ac/"],
         ],
-        body: JSON.stringify({"query":"query Example($name: String!) {\n  user(uname: $name) {\n    rpInfo\n  }\n}","variables":{"name": username},"operationName":"Example"}),
+        body: JSON.stringify({"query":"query Example($name: String!) {\n  user(uname: $name) {\n    rpInfo\n    _id\n  }\n}","variables":{"name":"Hydro"},"operationName":"Example"}),
         method: "POST",
     });
-    if (!res.ok) return { rating: 0, text: 'N/A' };
+    if (!res.ok) return { rating: 0, text: 'N/A', uid: 0 };
     const data = await res.json();
     const user = data.data.user;
-    if (user==null) return { rating: 0, text: 'N/A' };
+    if (user==null) return { rating: 0, text: 'N/A', uid: 0 };
     let rat=0;
     let userrp=user.rpInfo;
     if(userrp.problem!=undefined) rat+=userrp.problem;
     if(userrp.contest!=undefined) rat+=userrp.contest;
     if(userrp.contribution!=undefined) rat+=userrp.contribution;
     if(userrp.submissions!=undefined) rat+=userrp.submissions;
-    return {rating: rat.toFixed(2),text: rat.toFixed(2).toString() }
+    return {rating: rat.toFixed(2),text: rat.toFixed(2).toString(), uid: data.user._id }
 }
 
 async function getBadgeImage(username: string, data: UserRatingInfo, style: string) {
@@ -55,7 +56,7 @@ async function getBadgeImage(username: string, data: UserRatingInfo, style: stri
         longCache: 'true',
         style,
         logo,
-        link: `https://atcoder.jp/users/${username}`,
+        link: `https://hydro.ac/user/`+data.uid,
     }).toString();
 
     console.log(params);
