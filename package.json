@@ -1,6 +1,6 @@
 {
-  "name": "atcoder-rating",
-  "author": "Baoshuo <i@baoshuo.ren>",
+  "name": "hydro-rating",
+  "author": "Baoshuo <i@baoshuo.ren> and Yangrenrui <yangrenruiyrr@163.com>",
   "license": "MIT",
   "dependencies": {
     "@vercel/node": "^1.14.0",
