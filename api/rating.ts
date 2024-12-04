@@ -38,10 +38,11 @@ async function fetchData(username: string): Promise<UserRatingInfo> {
     const user = data.data.user;
     if (user==null) return { rating: 0, text: 'N/A' };
     let rat=0;
-    if(user.problem!=undefined) rat+=user.problem;
-    if(user.contest!=undefined) rat+=user.contest;
-    if(user.contribution!=undefined) rat+=user.contribution;
-    if(user.submissions!=undefined) rat+=user.submissions;
+    let userrp=user.rpInfo;
+    if(userrp.problem!=undefined) rat+=userrp.problem;
+    if(userrp.contest!=undefined) rat+=userrp.contest;
+    if(userrp.contribution!=undefined) rat+=userrp.contribution;
+    if(userrp.submissions!=undefined) rat+=userrp.submissions;
     return {rating: rat.toFixed(1),text: rat.toFixed(1).toString() }
 }
 
